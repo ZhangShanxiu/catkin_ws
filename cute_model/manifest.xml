@@ -1,0 +1,7 @@
+<package>
+  <description brief="cute_model">cute_model</description>
+  <depend package="gazebo" />
+  <depend package="gazebo_ros_control" />
+  <author>me</author>
+  <license>BSD</license>
+</package>

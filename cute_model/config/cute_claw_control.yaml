@@ -1,0 +1,7 @@
+claw_controller_1:
+  type: position_controllers/JointPositionController
+  joint: claw
+
+claw_controller_2:
+  type: position_controllers/JointPositionController
+  joint: claw_pris2
