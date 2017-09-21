@@ -1,6 +1,8 @@
 Cute Robot
 ======
 
+![cute_robot](docs/images/cute_robot.jpg)
+
 This repository provides ROS support for the Cute Robot. The recommend operating environment is on Ubuntu 14.04 with ROS Indigo. So far These packages haven't been tested in other environment.
 
 ### Installation
