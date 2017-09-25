@@ -43,6 +43,8 @@ $ catkin_make
 $ source devel/setup.bash
 ```
 
+For more information about API, see [docs/API_description_english.md](docs/API_description_english.md)
+
 ---
 
 ### Usage with Gazebo Simulation
@@ -133,3 +135,6 @@ $ rosservice call /cute_torque_enable "data: false"
 # "data: false" : disenable
 # "data: true": enable 
 ```
+
+For more information about API, see [docs/API_description_english.md](docs/API_description_english.md)
+

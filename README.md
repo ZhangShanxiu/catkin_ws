@@ -70,6 +70,8 @@ Tips:
 > 1. In the Motion Planning plugin of Rviz, enable “Allow External Comm.” checkbox in the “Planning” tab.  
 > 2. Add “Pose” to rviz Displays and subscribe to /joy_pose in order to see the output from joystick. Note that only planning groups that have IK solvers for all their End Effector parent groups will work.
 
+更多关于API的信息请看[docs/API_description.md](docs/API_description.md)
+
 ---
 
 ### 使用真实的Cute机器人
@@ -128,3 +130,5 @@ Tips:
 $ rosservice call /cute_torque_enable "data: false" 
 ```
 注意，在上行命令中，“data: false" 和 ”data: true" 的效果是不一样的。“data: false"可让机械臂去使能。与之相反，“data: true"可让机械臂使能。
+
+更多关于API的信息请看[docs/API_description.md](docs/API_description.md)
