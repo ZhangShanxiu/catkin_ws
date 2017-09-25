@@ -2,7 +2,7 @@
   <name>cute_xqtor_driver</name>
   <version>0.0.0</version>
   <description>
-    This package for xQtor servo driver
+    The package for xQtor servo driver
   </description>
   <maintainer email="liucong.cdhaw@gmail.com">Cong Liu</maintainer>
 
