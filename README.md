@@ -48,7 +48,7 @@ $ source devel/setup.bash
 ```sh
 $ roslaunch cute_model gazebo.launch
 ```
-运行MoveIt!模块和Rviz界面:
+运行MoveIt!模块和RViz界面:
 ```sh
 $ roslaunch cute_moveit_config moveit_planning_execution.launch
 ```
@@ -103,13 +103,18 @@ $ rosservice call /cute_go_home "data: true"
 ```
 在上行命令中，“data: false" 和 ”data: true" 的效果是一样的。
 
-运行MoveIt!模块和Rviz界面:
+运行MoveIt!模块和RViz界面:
 ```sh
 $ roslaunch cute_moveit_config moveit_planning_execution.launch
 ```
 > 关于MoveIt!的使用方法可以参考[docs/moveit_plugin_tutorial.md](docs/moveit_plugin_tutorial.md)  
 Tips:  
 每次规划路径时，都要设置初始位置为当前位置。
+
+如果你此时不想运行RViz界面，请用以下命令：
+```sh
+$ roslaunch cute_moveit_config moveit_planning_execution.launch display:=false
+```
 
 打开以下程序用键盘操作机械臂：
 ```sh

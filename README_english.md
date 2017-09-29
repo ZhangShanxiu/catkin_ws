@@ -115,6 +115,11 @@ $ roslaunch cute_moveit_config moveit_planning_execution.launch
 Tips:
 Every time you want to plan a trajectory, you should set the start state to current first.
 
+If you don't want to start up RViz at the moment, just run:
+```sh
+$ roslaunch cute_moveit_config moveit_planning_execution.launch display:=false
+```
+
 For the teleoperation with keyboard, run:
 ```sh
 $ rosrun cute_teleop cute_teleop_keyboard
