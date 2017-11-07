@@ -65,6 +65,16 @@ class JointPositionController(JointController):
         else:
             self.acceleration = None
         
+        if rospy.has_param(self.controller_namespace + '/motor/pid'):
+            self.pid_gains = rospy.get_param(self.controller_namespace + '/motor/pid')
+        else:
+            self.pid_gains=[]
+        
+        if rospy.has_param('cute_servo_version'):
+            self.servo_version=rospy.get_param('cute_servo_version')
+        else:
+            self.servo_version='xqtor_1'
+        
         self.flipped = self.min_angle_raw > self.max_angle_raw
         
         self.joint_state = JointState(name=self.joint_name, motor_ids=[self.motor_id])
@@ -101,6 +111,11 @@ class JointPositionController(JointController):
         if self.acceleration is not None:
             rospy.loginfo("Setting acceleration of %d to %d" % (self.motor_id, self.acceleration))
             self.dxl_io.set_acceleration(self.motor_id, self.acceleration)
+        if len(self.pid_gains) == 3:
+            self.dxl_io.set_p_gain(self.motor_id, self.pid_gains[0])
+            self.dxl_io.set_i_gain(self.motor_id, self.pid_gains[1])
+            self.dxl_io.set_d_gain(self.motor_id, self.pid_gains[2])
+            rospy.loginfo("Setting pid gains of %d to p: %d, i: %d, d: %d" % (self.motor_id, self.pid_gains[0], self.pid_gains[1], self.pid_gains[2]))
 
         self.joint_max_speed = rospy.get_param(self.controller_namespace + '/joint_max_speed', self.MAX_VELOCITY)
         
@@ -174,11 +189,12 @@ class JointPositionController(JointController):
                 self.joint_state.goal_pos = self.raw_to_rad(state.goal, self.initial_position_raw, self.flipped, self.RADIANS_PER_ENCODER_TICK)
                 self.joint_state.current_pos = self.raw_to_rad(state.position, self.initial_position_raw, self.flipped, self.RADIANS_PER_ENCODER_TICK)
                 self.joint_state.error = state.error * self.RADIANS_PER_ENCODER_TICK
-                # dynamixel servo velocity
-                # self.joint_state.velocity = state.speed * self.VELOCITY_PER_TICK
-                
-                # xQtor servo velocity
-                self.joint_state.velocity = state.speed * 2 * math.pi / 60
+                if self.servo_version=='dynamixel':
+                    # dynamixel servo velocity
+                    self.joint_state.velocity = state.speed * self.VELOCITY_PER_TICK
+                else:
+                    # xQtor servo velocity
+                    self.joint_state.velocity = state.speed * 2 * math.pi / 60
                 self.joint_state.load = state.load
                 self.joint_state.is_moving = state.moving
                 self.joint_state.header.stamp = rospy.Time.from_sec(state.timestamp)

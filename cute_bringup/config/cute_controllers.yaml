@@ -10,6 +10,8 @@ joint1_controller:
         init: 2048
         min: 853
         max: 3243
+        acceleration: 4  # Reference: xqtor_0: 0; xqtor_1: 4; 
+        pid: [30, 1, 0]
 
 joint2_controller:
     controller:
@@ -23,6 +25,8 @@ joint2_controller:
         init: 2048
         min: 853
         max: 3243
+        acceleration: 4  # Reference: xqtor_0: 0; xqtor_1: 4;
+        pid: [30, 1, 0]
 
 joint3_controller:
     controller:
@@ -36,6 +40,8 @@ joint3_controller:
         init: 2048
         min: 853
         max: 3243
+        acceleration: 4  # Reference: xqtor_0: 0; xqtor_1: 4;
+        pid: [30, 1, 0]
 
 joint4_controller:
     controller:
@@ -49,6 +55,8 @@ joint4_controller:
         init: 2048
         min: 853
         max: 3243
+        acceleration: 4  # Reference: xqtor_0: 0; xqtor_1: 4;
+        pid: [30, 1, 0]
 
 joint5_controller:
     controller:
@@ -62,6 +70,8 @@ joint5_controller:
         init: 2048
         min: 853
         max: 3243
+        acceleration: 4  # Reference: xqtor_0: 0; xqtor_1: 4;
+        pid: [30, 1, 0]
 
 joint6_controller:
     controller:
@@ -75,6 +85,8 @@ joint6_controller:
         init: 2048
         min: 853
         max: 3243
+        acceleration: 4  # Reference: xqtor_0: 0; xqtor_1: 4;
+        pid: [30, 1, 0]
 
 joint7_controller:
     controller:
@@ -88,6 +100,8 @@ joint7_controller:
         init: 2048
         min: 853
         max: 3243
+        acceleration: 4  # Reference: xqtor_0: 0; xqtor_1: 4;
+        pid: [30, 1, 0]
 
 claw_controller:
     controller:

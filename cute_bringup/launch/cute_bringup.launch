@@ -1,4 +1,9 @@
 <launch>
+    <!-- There are 3 options for servo: dynamixel, xqtor_0, xqtor_1 -->
+    <!-- xqtor_0: the early version of the xQtor servo before 2017-->
+    <!-- xqtor_1: the new version of the xQtor servo -->
+    <arg name="servo" default="xqtor_1"/>
+    <param name="cute_servo_version" value="$(arg servo)"/>
     <node name="dynamixel_manager" pkg="cute_servo_controllers" type="controller_manager.py" required="true" output="screen">
         <rosparam>
             namespace: dxl_manager
@@ -11,5 +16,5 @@
                     update_rate: 20
         </rosparam>
     </node>
-    <include file="$(find cute_bringup)/launch/cute_xqtor_spawner.launch"/>
+    <include file="$(find cute_bringup)/launch/cute_spawner.launch"/>
 </launch>

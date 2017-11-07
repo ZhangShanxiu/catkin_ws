@@ -1,6 +1,6 @@
 <launch>
     <!-- Load controller configuration to parameter server -->
-    <rosparam file="$(find cute_bringup)/config/cute_dxl_controllers.yaml" command="load"/>
+    <rosparam file="$(find cute_bringup)/config/cute_controllers.yaml" command="load"/>
 
     <!-- start specified joint controllers -->
     <node name="dynamixel_controller_spawner" pkg="dynamixel_controllers" type="controller_spawner.py"
@@ -29,7 +29,7 @@
                 joint6_controller
                 joint7_controller"
           output="screen"/>
-          
+
     <rosparam file="$(find cute_bringup)/config/cute_servo_manager.yaml" command="load"/>
     <node name="dynamixel_joint_states_manager" pkg="cute_bringup" type="dynamixel_joint_state_manager.py" output="screen"/>
     <param name="robot_description" command="$(find xacro)/xacro.py '$(find cute_model)/robots/cute_300es.urdf.xacro'" />
