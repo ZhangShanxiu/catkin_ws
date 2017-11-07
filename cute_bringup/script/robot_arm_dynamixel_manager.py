@@ -39,7 +39,9 @@ Created on Tue Aug 15 16:39:38 2017
 """
 # author: Cong Liu
 import rospy
+import math
 from std_msgs.msg import Float64
+from dynamixel_msgs.msg import JointState
 from cute_msgs.msg import Float64Array
 from dynamixel_controllers.srv import TorqueEnable, TorqueEnableRequest
 from dynamixel_controllers.srv import SetSpeed, SetSpeedRequest, SetSpeedResponse
@@ -52,13 +54,15 @@ class RobotArmDynManager(object):
         rospy.Service(arm_name+'_go_home', SetBool, self.go_home_cb)
         rospy.Service(arm_name+'_set_speed', SetSpeed, self.set_speed_cb)
         self.pubs=[]
+        self.joint_states=[]
         for i in xrange(len(self.controller_names)):
             pub_tmp=rospy.Publisher(self.controller_names[i]+'_controller/command',
                                     Float64, queue_size=1)
             self.pubs.append(pub_tmp)
-        self.joint_command_sub=rospy.Subscriber(arm_name+'_command_joint',
-                                                Float64Array,
-                                                self.joint_command_cb)
+            rospy.Subscriber(self.controller_names[i]+'_controller/state',
+                             JointState, self.get_joint_state, i)
+            self.joint_states.append(0)
+
     def torque_enable_cb(self, req):
         resp=SetBoolResponse()
         torque_require=TorqueEnableRequest()
@@ -71,7 +75,10 @@ class RobotArmDynManager(object):
         resp.success=True
         return resp
     
-    def go_home_cb(self, req):
+    def get_joint_state(self, msg, num):
+        self.joint_states[num]=msg.current_pos
+    
+    def go_home_cb_(self, req):
         resp=SetBoolResponse()
         torque_require=SetBoolRequest()
         torque_require.data=True
@@ -85,6 +92,28 @@ class RobotArmDynManager(object):
         else:
             resp.success=False
             return resp
+    
+    def go_home_cb(self, req):
+        resp=SetBoolResponse()
+        torque_require=SetBoolRequest()
+        torque_require.data=True
+        self.torque_enable_cb(torque_require)
+        pub_msg=Float64()
+        dur=rospy.Duration(0, 50000000)
+        flag=10
+        while flag>0:
+            flag=0
+            for i in xrange(len(self.controller_names)):
+                if math.fabs(self.joint_states[i])>0.03:
+                    cmd=self.joint_states[i]-(self.joint_states[i]/math.fabs(self.joint_states[i])) * 0.025
+                    pub_msg.data=cmd
+                    self.pubs[i].publish(pub_msg)
+                    flag+=1
+            rospy.sleep(dur)
+
+        resp.success=True
+        return resp
+            
     
     def set_speed_cb(self, req):
         resp=SetSpeedResponse()

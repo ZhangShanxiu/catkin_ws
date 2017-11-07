@@ -19,14 +19,6 @@ example:
 ```sh
 $ rostopic pub /cute_arm_controller/follow_joint_trajectory/cancel actionlib_msgs/GoalID -- {}
 ```
-*注：以下Subscribed Topics在仿真环境下是没有的。*  
-
-**cute_command_joint (cute_msg/Float64Array)**  
-控制机械臂各个关节位置的指令  
-example:
-```sh
-$ rostopic pub /cute_command_joint cute_msgs/Float64Array "data: [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, -0.2]"
-```
 
 #### Published Topics:
 

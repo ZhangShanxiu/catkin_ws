@@ -86,17 +86,13 @@ If there are more than one usb devices, you should confirm the ID(s) of the othe
 ```
         port_name: "/dev/ttyUSB0"
 ```
-Correct the following lines in launch and configuration files according to the servo version.  
+Correct the following lines in launch files according to the servo version.  
 *cute_bringup/launch/cute_bringup.launch:*
 ```xml
     <!-- There are 3 options for servo: dynamixel, xqtor_0, xqtor_1 -->
     <!-- xqtor_0: the early version of the xQtor servo before 2017-->
     <!-- xqtor_1: the new version of the xQtor servo -->
     <arg name="servo" default="xqtor_1"/>
-```
-*cute_bringup/config/cute_controllers.yaml:*
-```sh
-        acceleration: 4  # Reference: xqtor_0: 0; xqtor_1: 4;
 ```
 
 Assuming the device ID is /dev/ttyUSB0, bring up the real robot:

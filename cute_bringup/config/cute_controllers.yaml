@@ -4,13 +4,12 @@ joint1_controller:
         module: joint_position_controller
         type: JointPositionController
     joint_name: joint1
-    joint_speed: 1.0
+    joint_speed: 3.0
     motor:
         id: 0
         init: 2048
         min: 853
         max: 3243
-        acceleration: 4  # Reference: xqtor_0: 0; xqtor_1: 4; 
         pid: [30, 1, 0]
 
 joint2_controller:
@@ -19,13 +18,12 @@ joint2_controller:
         module: joint_position_controller
         type: JointPositionController
     joint_name: joint2
-    joint_speed: 1.0
+    joint_speed: 3.0
     motor:
         id: 1
         init: 2048
         min: 853
         max: 3243
-        acceleration: 4  # Reference: xqtor_0: 0; xqtor_1: 4;
         pid: [30, 1, 0]
 
 joint3_controller:
@@ -34,13 +32,12 @@ joint3_controller:
         module: joint_position_controller
         type: JointPositionController
     joint_name: joint3
-    joint_speed: 1.0
+    joint_speed: 3.0
     motor:
         id: 2
         init: 2048
         min: 853
         max: 3243
-        acceleration: 4  # Reference: xqtor_0: 0; xqtor_1: 4;
         pid: [30, 1, 0]
 
 joint4_controller:
@@ -49,13 +46,12 @@ joint4_controller:
         module: joint_position_controller
         type: JointPositionController
     joint_name: joint4
-    joint_speed: 1.0
+    joint_speed: 3.0
     motor:
         id: 3
         init: 2048
         min: 853
         max: 3243
-        acceleration: 4  # Reference: xqtor_0: 0; xqtor_1: 4;
         pid: [30, 1, 0]
 
 joint5_controller:
@@ -64,13 +60,12 @@ joint5_controller:
         module: joint_position_controller
         type: JointPositionController
     joint_name: joint5
-    joint_speed: 1.0
+    joint_speed: 3.0
     motor:
         id: 4
         init: 2048
         min: 853
         max: 3243
-        acceleration: 4  # Reference: xqtor_0: 0; xqtor_1: 4;
         pid: [30, 1, 0]
 
 joint6_controller:
@@ -79,13 +74,12 @@ joint6_controller:
         module: joint_position_controller
         type: JointPositionController
     joint_name: joint6
-    joint_speed: 1.0
+    joint_speed: 3.0
     motor:
         id: 5
         init: 2048
         min: 853
         max: 3243
-        acceleration: 4  # Reference: xqtor_0: 0; xqtor_1: 4;
         pid: [30, 1, 0]
 
 joint7_controller:
@@ -94,13 +88,12 @@ joint7_controller:
         module: joint_position_controller
         type: JointPositionController
     joint_name: joint7
-    joint_speed: 1.0
+    joint_speed: 3.0
     motor:
         id: 6
         init: 2048
         min: 853
         max: 3243
-        acceleration: 4  # Reference: xqtor_0: 0; xqtor_1: 4;
         pid: [30, 1, 0]
 
 claw_controller:

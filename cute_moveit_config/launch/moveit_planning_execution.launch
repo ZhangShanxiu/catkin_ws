@@ -2,6 +2,8 @@
  # The planning and execution components of MoveIt! configured to 
  # publish the current configuration of the robot (simulated or real)
  # and the current state of the world as seen by the planner
+ 
+ <include file="$(find cute_ros_control)/launch/cute_ros_control.launch"/>
    
  <param name="move_group/trajectory_execution/execution_duration_monitoring" value="false" />
  

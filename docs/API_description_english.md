@@ -19,14 +19,6 @@ example:
 ```sh
 $ rostopic pub /cute_arm_controller/follow_joint_trajectory/cancel actionlib_msgs/GoalID -- {}
 ```
-*Note: the following Subscribed Topics are invalid in simulation*  
-
-**cute_command_joint (cute_msg/Float64Array)**  
-control the positions of the robot's joints.  
-example:
-```sh
-$ rostopic pub /cute_command_joint cute_msgs/Float64Array "data: [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, -0.2]"
-```
 
 #### Published Topics:
 

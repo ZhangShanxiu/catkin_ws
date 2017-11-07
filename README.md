@@ -91,10 +91,6 @@ cute_bringup/launch/cute_bringup.launch：
     <!-- xqtor_1: the new version of the xQtor servo -->
     <arg name="servo" default="xqtor_1"/>
 ```
-cute_bringup/config/cute_controllers.yaml：
-```sh
-        acceleration: 4  # Reference: xqtor_0: 0; xqtor_1: 4;
-```
 
 现假设设备编号是/dev/ttyUSB0，运行以下指令来启动驱动：
 ```sh
