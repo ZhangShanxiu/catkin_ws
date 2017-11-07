@@ -82,23 +82,29 @@ Connect Cute to the computer with a usb cable. You can see the usb device ID(s) 
 ```sh
 $ ls /dev/ttyUSB*
 ```
-If there are more than one usb devices, you should confirm the ID(s) of the other device(s) before you connect Cute to the computer. In this case you can find out the device ID of Cute. The default ID is /dev/ttyUSB0. If your device ID is not /dev/ttyUSB0, you should correct the following line in the file *cute_bringup/launch/cute_dxl_bringup.launch* or *cute_bringup/launch/cute_xqtor_bringup.launch*
+If there are more than one usb devices, you should confirm the ID(s) of the other device(s) before you connect Cute to the computer. In this case you can find out the device ID of Cute. The default ID is /dev/ttyUSB0. If your device ID is not /dev/ttyUSB0, you should correct the following line in the file *cute_bringup/launch/cute_bringup.launch* 
 ```
-port_name: "/dev/ttyUSB0"
+        port_name: "/dev/ttyUSB0"
+```
+Correct the following lines in launch and configuration files according to the servo version.  
+*cute_bringup/launch/cute_bringup.launch:*
+```xml
+    <!-- There are 3 options for servo: dynamixel, xqtor_0, xqtor_1 -->
+    <!-- xqtor_0: the early version of the xQtor servo before 2017-->
+    <!-- xqtor_1: the new version of the xQtor servo -->
+    <arg name="servo" default="xqtor_1"/>
+```
+*cute_bringup/config/cute_controllers.yaml:*
+```sh
+        acceleration: 4  # Reference: xqtor_0: 0; xqtor_1: 4;
 ```
 
-Assuming the device ID is /dev/ttyUSB0, bring up the real robot according to the servo brand
+Assuming the device ID is /dev/ttyUSB0, bring up the real robot:
+```sh
+$ sudo chmod 777 /dev/ttyUSB0
+$ roslaunch cute_bringup cute_bringup.launch
+```
 
-If you are using **dynamixel** servos, run:
-```sh
-$ sudo chmod 777 /dev/ttyUSB0
-$ roslaunch cute_bringup cute_dxl_bringup.launch
-```
-If you are using **Han's xQtor** servos, run:
-```sh
-$ sudo chmod 777 /dev/ttyUSB0
-$ roslaunch cute_bringup cute_xqtor_bringup.launch
-```
 Make the robot go to home position:
 ```sh
 $ rosservice call /cute_go_home "data: true"

@@ -79,22 +79,27 @@ Tips:
 ```sh
 $ ls /dev/ttyUSB*
 ```
-如果有多个设备的话，可以先在不连Cute的情况下确定其他设备的编号，再插入Cute连接线，这样新增加的设备编号就是Cute的了。本软件包默认的编号是/dev/ttyUSB0 。假如当前编号不是0的话，请对cute_bringup/launch/cute_dxl_bringup.launch或cute_bringup/launch/cute_xqtor_bringup.launch的相应部分进行修改。
+如果有多个设备的话，可以先在不连Cute的情况下确定其他设备的编号，再插入Cute连接线，这样新增加的设备编号就是Cute的了。本软件包默认的编号是/dev/ttyUSB0 。假如当前编号不是0的话，请对cute_bringup/launch/cute_bringup.launch的相应部分进行修改。
 ```
-port_name: "/dev/ttyUSB0"
+        port_name: "/dev/ttyUSB0"
+```
+根据Cute所搭载的舵机型号对启动文件的相应部分进行修改。  
+cute_bringup/launch/cute_bringup.launch：
+```xml
+    <!-- There are 3 options for servo: dynamixel, xqtor_0, xqtor_1 -->
+    <!-- xqtor_0: the early version of the xQtor servo before 2017-->
+    <!-- xqtor_1: the new version of the xQtor servo -->
+    <arg name="servo" default="xqtor_1"/>
+```
+cute_bringup/config/cute_controllers.yaml：
+```sh
+        acceleration: 4  # Reference: xqtor_0: 0; xqtor_1: 4;
 ```
 
-现假设设备编号是/dev/ttyUSB0，请根据你所使用的舵机来启动Cute
-
-假如你使用的是**dynamixel**的舵机的话，运行以下指令来启动驱动：
+现假设设备编号是/dev/ttyUSB0，运行以下指令来启动驱动：
 ```sh
 $ sudo chmod 777 /dev/ttyUSB0
-$ roslaunch cute_bringup cute_dxl_bringup.launch
-```
-假如你使用的是**Han's xQtor**的舵机的话，运行以下指令来启动驱动：
-```sh
-$ sudo chmod 777 /dev/ttyUSB0
-$ roslaunch cute_bringup cute_xqtor_bringup.launch
+$ roslaunch cute_bringup cute_bringup.launch
 ```
 
 令机械臂回到起始位姿：
