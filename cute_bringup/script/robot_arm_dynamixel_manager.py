@@ -50,6 +50,10 @@ from std_srvs.srv import SetBool, SetBoolResponse, SetBoolRequest
 class RobotArmDynManager(object):
     def __init__(self, arm_name=''):
         self.controller_names=rospy.get_param(arm_name+'_controller_names', [])
+        self.go_home_speed=rospy.get_param(arm_name+'_go_home_speed', 20)
+        if self.go_home_speed<2:
+            self.go_home_speed=2
+        self.go_home_dur_ns=int(1e+9/self.go_home_speed)
         rospy.Service(arm_name+'_torque_enable', SetBool, self.torque_enable_cb)
         rospy.Service(arm_name+'_go_home', SetBool, self.go_home_cb)
         rospy.Service(arm_name+'_set_speed', SetSpeed, self.set_speed_cb)
@@ -99,7 +103,7 @@ class RobotArmDynManager(object):
         torque_require.data=True
         self.torque_enable_cb(torque_require)
         pub_msg=Float64()
-        dur=rospy.Duration(0, 50000000)
+        dur=rospy.Duration(0, self.go_home_dur_ns)
         flag=10
         while flag>0:
             flag=0
