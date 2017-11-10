@@ -143,5 +143,10 @@ $ rosservice call /cute_torque_enable "data: false"
 # "data: true": enable 
 ```
 
+You should set the gripper torque enabled before controlling it.
+```sh
+$ rosservice call /claw_controller/torque_enable "data: true"
+``` 
+
 For more information about API, see [docs/API_description_english.md](docs/API_description_english.md)
 

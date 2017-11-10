@@ -22,5 +22,7 @@
   
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
     
+    <include file="$(find cute_ros_control)/launch/cute_ros_control.launch"/>
+    
     <node name="robot_arm_dynamixel_manager" pkg="cute_bringup" type="robot_arm_dynamixel_manager.py"/>
 </launch>

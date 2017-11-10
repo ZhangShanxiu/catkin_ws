@@ -39,81 +39,76 @@ Created on Tue Aug 15 16:39:38 2017
 """
 # author: Cong Liu
 import rospy
-import math
 from std_msgs.msg import Float64
-from dynamixel_msgs.msg import JointState
-from cute_msgs.msg import Float64Array
 from dynamixel_controllers.srv import TorqueEnable, TorqueEnableRequest
 from dynamixel_controllers.srv import SetSpeed, SetSpeedRequest, SetSpeedResponse
 from std_srvs.srv import SetBool, SetBoolResponse, SetBoolRequest
+from trajectory_msgs.msg import JointTrajectoryPoint
+from actionlib import SimpleActionClient
+from control_msgs.msg import FollowJointTrajectoryAction, FollowJointTrajectoryGoal
 
 class RobotArmDynManager(object):
     def __init__(self, arm_name=''):
         self.controller_names=rospy.get_param(arm_name+'_controller_names', [])
-        self.go_home_speed=rospy.get_param(arm_name+'_go_home_speed', 20)
-        if self.go_home_speed<2:
-            self.go_home_speed=2
-        self.go_home_dur_ns=int(1e+9/self.go_home_speed)
+        self.go_home_time=rospy.get_param(arm_name+'_go_home_time', 10)
+        if self.go_home_time<2:
+            self.go_home_time=2
         rospy.Service(arm_name+'_torque_enable', SetBool, self.torque_enable_cb)
         rospy.Service(arm_name+'_go_home', SetBool, self.go_home_cb)
         rospy.Service(arm_name+'_set_speed', SetSpeed, self.set_speed_cb)
+        self.action_client=SimpleActionClient('cute_arm_controller/follow_joint_trajectory',
+                                              FollowJointTrajectoryAction)
+        self.action_goal=FollowJointTrajectoryGoal()
+        self.action_goal.trajectory.joint_names=self.controller_names
         self.pubs=[]
-        self.joint_states=[]
         for i in xrange(len(self.controller_names)):
             pub_tmp=rospy.Publisher(self.controller_names[i]+'_controller/command',
                                     Float64, queue_size=1)
             self.pubs.append(pub_tmp)
-            rospy.Subscriber(self.controller_names[i]+'_controller/state',
-                             JointState, self.get_joint_state, i)
-            self.joint_states.append(0)
 
     def torque_enable_cb(self, req):
         resp=SetBoolResponse()
         torque_require=TorqueEnableRequest()
         torque_require.torque_enable=req.data
+        
+        # Send empty trajectory
+        if req.data==True:
+            self.action_client.wait_for_server()
+            self.action_goal.trajectory.header.stamp.secs=0
+            self.action_goal.trajectory.header.stamp.nsecs=0
+            self.action_goal.trajectory.points=[]
+            self.action_client.send_goal(self.action_goal)
+            rospy.sleep(1)
+        
         for i in xrange(len(self.controller_names)):
             cl_tmp=rospy.ServiceProxy(self.controller_names[i]+'_controller/torque_enable',
                                       TorqueEnable)
             cl_tmp.call(torque_require)
-            rospy.sleep(0.1)
+            rospy.sleep(0.3)
         resp.success=True
         return resp
-    
-    def get_joint_state(self, msg, num):
-        self.joint_states[num]=msg.current_pos
-    
-    def go_home_cb_(self, req):
-        resp=SetBoolResponse()
-        torque_require=SetBoolRequest()
-        torque_require.data=True
-        torque_response=self.torque_enable_cb(torque_require)
-        if torque_response.success:
-            home_pose=Float64Array()
-            home_pose.data=[0]*len(self.controller_names)
-            self.joint_command_cb(home_pose)
-            resp.success=True
-            return resp
-        else:
-            resp.success=False
-            return resp
     
     def go_home_cb(self, req):
         resp=SetBoolResponse()
         torque_require=SetBoolRequest()
         torque_require.data=True
         self.torque_enable_cb(torque_require)
-        pub_msg=Float64()
-        dur=rospy.Duration(0, self.go_home_dur_ns)
-        flag=10
-        while flag>0:
-            flag=0
-            for i in xrange(len(self.controller_names)):
-                if math.fabs(self.joint_states[i])>0.03:
-                    cmd=self.joint_states[i]-(self.joint_states[i]/math.fabs(self.joint_states[i])) * 0.025
-                    pub_msg.data=cmd
-                    self.pubs[i].publish(pub_msg)
-                    flag+=1
-            rospy.sleep(dur)
+        
+        self.action_client.wait_for_server()
+        self.action_goal.trajectory.header.stamp.secs=0
+        self.action_goal.trajectory.header.stamp.nsecs=0
+        
+        point_tmp=JointTrajectoryPoint()
+        position_tmp=[]
+        for i in xrange(len(self.controller_names)):
+            position_tmp.append(0)
+        point_tmp.positions=position_tmp
+        point_tmp.time_from_start.secs=int(self.go_home_time)
+        print len(self.action_goal.trajectory.points)
+        self.action_goal.trajectory.points.append(point_tmp)
+        self.action_client.send_goal(self.action_goal)
+        self.action_client.wait_for_result()
+        self.action_goal.trajectory.points=[]
 
         resp.success=True
         return resp

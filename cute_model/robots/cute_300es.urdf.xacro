@@ -8,6 +8,8 @@
   <xacro:include filename="$(find cute_model)/robots/cute_transmission.xacro" />
   
   <xacro:property name="PI" value="3.1415926535897931"/>
+  <xacro:property name="horizontal_joint_limit" value="2.61799"/>
+  <xacro:property name="vertical_joint_limit" value="1.8326"/>
   
   <link name="world"/>
   
@@ -106,8 +108,8 @@
     <axis
       xyz="0 0 1" />
     <limit
-      lower="${-0.58*PI}"
-      upper="${0.58*PI}"
+      lower="${-1*horizontal_joint_limit}"
+      upper="${horizontal_joint_limit}"
       effort="120"
       velocity="4.0" />
   </joint>
@@ -160,8 +162,8 @@
     <axis
       xyz="0 1 0" />
     <limit
-      lower="${-0.58*PI}"
-      upper="${0.58*PI}"
+      lower="${-1*vertical_joint_limit}"
+      upper="${vertical_joint_limit}"
       effort="120"
       velocity="4.0" />
   </joint>
@@ -214,8 +216,8 @@
     <axis
       xyz="0 0 1" />
     <limit
-      lower="${-0.58*PI}"
-      upper="${0.58*PI}"
+      lower="${-1*horizontal_joint_limit}"
+      upper="${horizontal_joint_limit}"
       effort="120"
       velocity="4.0" />
   </joint>
@@ -268,8 +270,8 @@
     <axis
       xyz="0 1 0" />
     <limit
-      lower="${-0.58*PI}"
-      upper="${0.58*PI}"
+      lower="${-1*vertical_joint_limit}"
+      upper="${vertical_joint_limit}"
       effort="120"
       velocity="4.0" />
   </joint>
@@ -322,8 +324,8 @@
     <axis
       xyz="0 -1 0" />
     <limit
-      lower="${-0.58*PI}"
-      upper="${0.58*PI}"
+      lower="${-1*vertical_joint_limit}"
+      upper="${vertical_joint_limit}"
       effort="120"
       velocity="4.0" />
   </joint>
@@ -376,8 +378,8 @@
     <axis
       xyz="-0.24105 0.97051 0" />
     <limit
-      lower="${-0.58*PI}"
-      upper="${0.58*PI}"
+      lower="${-1*vertical_joint_limit}"
+      upper="${vertical_joint_limit}"
       effort="120"
       velocity="4.0" />
   </joint>
@@ -430,8 +432,8 @@
     <axis
       xyz="0 0 1" />
     <limit
-      lower="${-0.58*PI}"
-      upper="${0.58*PI}"
+      lower="${-1*horizontal_joint_limit}"
+      upper="${horizontal_joint_limit}"
       effort="120"
       velocity="4.0" />
   </joint>

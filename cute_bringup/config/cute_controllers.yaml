@@ -8,8 +8,8 @@ joint1_controller:
     motor:
         id: 0
         init: 2048
-        min: 853
-        max: 3243
+        min: 342
+        max: 3754
         acceleration: 0
         pid: [30, 1, 0]
 
@@ -38,8 +38,8 @@ joint3_controller:
     motor:
         id: 2
         init: 2048
-        min: 853
-        max: 3243
+        min: 342
+        max: 3754
         acceleration: 0
         pid: [30, 1, 0]
 
@@ -98,8 +98,8 @@ joint7_controller:
     motor:
         id: 6
         init: 2048
-        min: 853
-        max: 3243
+        min: 342
+        max: 3754
         acceleration: 0
         pid: [30, 1, 0]
 

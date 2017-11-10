@@ -155,9 +155,30 @@ int main(int argc, char** argv)
 {
     ros::init(argc,argv,"cute_hardware_interface", ros::init_options::AnonymousName);
     CuteHWInterface c1;
+
+    // init joint states
+    ros::Rate r_tmp(10);
+    for(int i=0; i<50; i++)
+    {
+        ros::spinOnce();
+        r_tmp.sleep();
+        if(i%10==0)
+            ROS_INFO("cute bring up in %i", (10-i/10));
+    }
+
     controller_manager::ControllerManager cm(&c1);
     pthread_t tid;
     pthread_create(&tid, NULL, update_loop, (void *)&cm);
+
+    for(int i=0; i<50; i++)
+    {
+        ros::spinOnce();
+        r_tmp.sleep();
+        if(i%10==0)
+            ROS_INFO("cute bring up in %i", (5-i/10));
+    }
+    ROS_INFO("cute bring up successfully");
+    // loop
     ros::Rate r(50);
     while(ros::ok())
     {

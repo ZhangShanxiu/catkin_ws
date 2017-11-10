@@ -137,4 +137,9 @@ $ rosservice call /cute_torque_enable "data: false"
 ```
 注意，在上行命令中，“data: false" 和 ”data: true" 的效果是不一样的。“data: false"可让机械臂去使能。与之相反，“data: true"可让机械臂使能。
 
+控制夹爪前也需将其使能
+```sh
+$ rosservice call /claw_controller/torque_enable "data: true"
+```
+
 更多关于API的信息请看[docs/API_description.md](docs/API_description.md)
