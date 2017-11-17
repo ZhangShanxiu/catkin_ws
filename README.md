@@ -139,7 +139,7 @@ $ rosservice call /cute_torque_enable "data: false"
 
 控制夹爪前也需将其使能
 ```sh
-$ rosservice call /claw_controller/torque_enable "data: true"
+$ rosservice call /claw_controller/torque_enable "torque_enable: true"
 ```
 
 更多关于API的信息请看[docs/API_description.md](docs/API_description.md)
