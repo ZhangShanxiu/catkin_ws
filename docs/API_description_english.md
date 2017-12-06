@@ -19,11 +19,11 @@ This topic contain a trajectory. When you publish this topic, the robot will mov
 
 * **cute_arm_controller/follow_joint_trajectory/cancel (actionlib_msgs/GoalID)**  
 stop a trajectory action in executing by publishing an empty topic.  
-
-example:
-```sh
+example:  
+`
 $ rostopic pub /cute_arm_controller/follow_joint_trajectory/cancel actionlib_msgs/GoalID -- {}
-```
+`  
+
 ------
 ### Published Topics:
 
@@ -38,25 +38,24 @@ the transformation relationship among the links.
 *Note: the following Services are invalid in simulation*  
 
 * **cute_go_home (std_srvs/SetBool)**  
-make the robot go to home position.
-
-example:
-```sh
+make the robot go to home position.  
+example:  
+`
 $ rosservice call /cute_go_home "data: false"
-or
+`  
+or  
+`
 $ rosservice call /cute_go_home "data: true"
-```
+`
 
 * **cute_torque_enable (std_srvs/SetBool)**  
-set torque enable/disenable
-
-example:
-
-enable:
-```sh
-rosservice call /cute_torque_enable "data: true" 
-```
-disenable:
-```sh
+set torque enable/disenable  
+example:  
+enable:  
+`
+$ rosservice call /cute_torque_enable "data: true" 
+`  
+disenable:  
+`
 rosservice call /cute_torque_enable "data: false" 
-```
+`

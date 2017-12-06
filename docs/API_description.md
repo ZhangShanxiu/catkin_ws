@@ -20,11 +20,11 @@ example: function_pub_ps in /cute_bringup/script/cmd_pub.py
 
 * **cute_arm_controller/follow_joint_trajectory/cancel (actionlib_msgs/GoalID)**  
 发布空的消息可以停止正在执行中的轨迹运动  
-
-example:
-```sh
+example:  
+`
 $ rostopic pub /cute_arm_controller/follow_joint_trajectory/cancel actionlib_msgs/GoalID -- {}
-```
+`  
+
 ------
 ### Published Topics:
 
@@ -40,24 +40,23 @@ $ rostopic pub /cute_arm_controller/follow_joint_trajectory/cancel actionlib_msg
 
 * **cute_go_home (std_srvs/SetBool)**  
 让机械臂回到初始位姿  
-
-example:
-```sh
+example:  
+`
 $ rosservice call /cute_go_home "data: false"
-or
+`  
+or  
+`
 $ rosservice call /cute_go_home "data: true"
-```
+`
 
 * **cute_torque_enable (std_srvs/SetBool)**  
 设置机械臂使能状态  
-
 example:  
-
-使能：
-```sh
-rosservice call /cute_torque_enable "data: true" 
-```
-去使能：
-```sh
-rosservice call /cute_torque_enable "data: false" 
-```
+使能：  
+`
+$ rosservice call /cute_torque_enable "data: true" 
+`  
+去使能：  
+`
+$ rosservice call /cute_torque_enable "data: false" 
+`
