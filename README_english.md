@@ -10,7 +10,9 @@ This repository provides ROS support for the Cute Robot. The recommend operating
 ```sh
 $ sudo apt-get install ros-indigo-dynamixel-motor ros-indigo-gazebo-ros-control
 ```
-**Install or upgrade MoveIt!.** If you have installed MoveIt!, please make sure that it's been upgraded to the latest version.
+**Install or upgrade MoveIt!.**
+
+If you have installed MoveIt!, please make sure that it's been upgraded to the latest version.
 
 Install MoveIt!:
 
@@ -43,8 +45,6 @@ $ catkin_make
 $ source devel/setup.bash
 ```
 
-For more information about API, see [docs/API_description_english.md](docs/API_description_english.md)
-
 ---
 
 ### Usage with Gazebo Simulation
@@ -74,6 +74,8 @@ http://docs.ros.org/indigo/api/moveit_tutorials/html/doc/ros_visualization/joyst
 Tips:  
 > 1. In the Motion Planning plugin of Rviz, enable “Allow External Comm.” checkbox in the “Planning” tab.  
 > 2. Add “Pose” to rviz Displays and subscribe to /joy_pose in order to see the output from joystick. Note that only planning groups that have IK solvers for all their End Effector parent groups will work.
+
+For more information about API, see [docs/API_description_english.md](docs/API_description_english.md)
 
 ---
 
