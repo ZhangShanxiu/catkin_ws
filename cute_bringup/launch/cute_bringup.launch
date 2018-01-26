@@ -13,7 +13,7 @@
                     baud_rate: 250000
                     min_motor_id: 0
                     max_motor_id: 25
-                    update_rate: 20
+                    update_rate: 50
         </rosparam>
     </node>
     <include file="$(find cute_bringup)/launch/cute_spawner.launch"/>

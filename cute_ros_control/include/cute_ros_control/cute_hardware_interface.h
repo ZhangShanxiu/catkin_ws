@@ -47,6 +47,7 @@ Created on Wed Sep 20 11:45:30 2017
 
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
+#include <boost/thread/mutex.hpp>
 
 #include <std_msgs/Float64.h>
 #include <sensor_msgs/JointState.h>

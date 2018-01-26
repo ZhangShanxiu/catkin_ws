@@ -39,6 +39,8 @@ Created on Wed Sep 20 11:30:15 2017
 
 #include "cute_ros_control/cute_hardware_interface.h"
 
+boost::mutex cute_io_mutex;
+
 CuteHWInterface::CuteHWInterface()
 {
     for(int i=0; i<7; i++)
@@ -105,6 +107,7 @@ void CuteHWInterface::read(const dynamixel_msgs::JointStateConstPtr &msg)
     }
     int msg_num=msg->motor_ids[0];
     double bm=msg->current_pos-pos[msg_num];
+    boost::mutex::scoped_lock lock(cute_io_mutex);
     pos[msg_num]=msg->current_pos;
     if(ros::Time::now()-start_time_>start_dur_)
     {
@@ -141,12 +144,14 @@ static void timespecInc(struct timespec &tick, int nsec)
 void* update_loop(void* threadarg)
 {
     controller_manager::ControllerManager *c=(controller_manager::ControllerManager *)threadarg;
-    ros::Rate r(20);
-    ros::Duration d(0.05);
+    ros::Rate r(50);
+    ros::Duration d(0.02);
 
     while(ros::ok())
     {
+        boost::mutex::scoped_lock lock(cute_io_mutex);
         c->update(ros::Time::now(), d);
+        lock.unlock();
         r.sleep();
     }
 }
@@ -182,7 +187,9 @@ int main(int argc, char** argv)
     ros::Rate r(50);
     while(ros::ok())
     {
+        boost::mutex::scoped_lock lock(cute_io_mutex);
         c1.publishCmd();
+        lock.unlock();
         ros::spinOnce();
         r.sleep();
     }
