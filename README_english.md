@@ -8,7 +8,7 @@ This repository provides ROS support for the Cute Robot. The recommend operating
 ### Installation
 **Install some important dependent software packages:**
 ```sh
-$ sudo apt-get install ros-indigo-dynamixel-motor ros-indigo-gazebo-ros-control
+$ sudo apt-get install ros-indigo-dynamixel-motor ros-indigo-gazebo-ros-control ros-indigo-ros-control ros-indigo-ros-controllers
 ```
 **Install or upgrade MoveIt!.**
 
