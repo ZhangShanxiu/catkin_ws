@@ -3,7 +3,7 @@
   
   <arg name="gui" default="true" />
     
-  <param name="robot_description" command="$(find xacro)/xacro.py '$(find cute_model)/robots/cute_300es.urdf.xacro'" />
+  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find cute_model)/robots/cute_300es.urdf.xacro'" />
   
   <param name="use_gui" value="$(arg gui)" />
   

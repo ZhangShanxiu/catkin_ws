@@ -1,7 +1,7 @@
 <launch>
   <include file="$(find gazebo_ros)/launch/empty_world.launch" />
 
-  <param name="robot_description" command="$(find xacro)/xacro.py --inorder '$(find cute_model)/robots/cute_300es.urdf.xacro'" />
+  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find cute_model)/robots/cute_300es.urdf.xacro'" />
     
   <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-urdf -model cute_300es_model -param robot_description -z 0.1"/>
 
