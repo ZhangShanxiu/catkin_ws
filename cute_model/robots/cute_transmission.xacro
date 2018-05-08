@@ -74,7 +74,7 @@
     <transmission name="claw_trans_1">
       <type>transmission_interface/SimpleTransmission</type>
       <joint name="claw">
-        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
       </joint>
       <actuator name="claw_motor_1">
         <mechanicalReduction>1</mechanicalReduction>
@@ -84,7 +84,7 @@
     <transmission name="claw_trans_2">
       <type>transmission_interface/SimpleTransmission</type>
       <joint name="claw_pris2">
-        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
       </joint>
       <actuator name="claw_motor_2">
         <mechanicalReduction>1</mechanicalReduction>
