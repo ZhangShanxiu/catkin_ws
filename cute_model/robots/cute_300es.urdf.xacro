@@ -8,8 +8,8 @@
   <xacro:include filename="$(find cute_model)/robots/cute_transmission.xacro" />
   
   <xacro:property name="PI" value="3.1415926535897931"/>
-  <xacro:property name="horizontal_joint_limit" value="2.61799"/>
-  <xacro:property name="vertical_joint_limit" value="1.8326"/>
+  <xacro:property name="horizontal_joint_limit" value="2.5"/>
+  <xacro:property name="vertical_joint_limit" value="1.8"/>
   
   <link name="world"/>
   
