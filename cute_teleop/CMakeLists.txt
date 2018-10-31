@@ -10,6 +10,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
+  urdf
 )
 
 ## System dependencies are found with CMake's conventions
@@ -190,4 +191,5 @@ include_directories(
 # catkin_add_nosetests(test)
 
 add_executable(cute_teleop_keyboard src/cute_teleop_keyboard.cpp)
+add_dependencies(cute_teleop_keyboard ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(cute_teleop_keyboard ${catkin_LIBRARIES})

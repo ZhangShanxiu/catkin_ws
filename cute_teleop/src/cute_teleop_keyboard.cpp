@@ -51,6 +51,7 @@ Created on Wed Aug 23 10:40:20 2017
 #include <moveit_msgs/GetPositionIK.h>
 #include <geometry_msgs/Twist.h>
 #include <geometry_msgs/Pose.h>
+#include <urdf/model.h>
 #include <std_msgs/Float64.h>
 #include <sensor_msgs/JointState.h>
 #include <actionlib/client/simple_action_client.h>
@@ -82,8 +83,9 @@ Created on Wed Aug 23 10:40:20 2017
 
 sensor_msgs::JointState js_current;
 double claw_state;
-double MAX_ANGLE=0.58*M_PI;
-double MIN_ANGLE=-0.58*M_PI;
+
+std::vector<double> angular_limit_upper;
+std::vector<double> angular_limit_lower;
 
 bool flag_discontinuous_movement=false;
 
@@ -94,6 +96,29 @@ ros::ServiceClient client_fk;
 moveit_msgs::GetPositionIK::Request request_ik;
 moveit_msgs::GetPositionIK::Response response_ik;
 ros::ServiceClient client_ik;
+
+void getAngularLimit()
+{
+    std::string rbt_name="robot_description";
+    urdf::Model urdf_model;
+    if(!urdf_model.initParam(rbt_name))
+    {
+        ROS_ERROR("Can't get %s", rbt_name.c_str());
+        exit(0);
+    }
+    std::string joint_names[7]={"joint1", "joint2", "joint3", "joint4", "joint5", "joint6", "joint7"};
+    angular_limit_upper.clear();
+    angular_limit_lower.clear();
+
+    for(int i=0; i<7; i++)
+    {
+        double limit_upper_tmp=urdf_model.getJoint(joint_names[i])->limits->upper;
+        double limit_lower_tmp=urdf_model.getJoint(joint_names[i])->limits->lower;
+
+        angular_limit_upper.push_back(limit_upper_tmp);
+        angular_limit_lower.push_back(limit_lower_tmp);
+    }
+}
 
 void getJointStates(const sensor_msgs::JointState::ConstPtr& msg)
 {
@@ -158,6 +183,8 @@ int main(int argc, char** argv)
     CuteKeyboardTeleopNode cute_teleop;
     
     ros::NodeHandle n_;
+
+    getAngularLimit();
     
     ros::Subscriber sub_js=n_.subscribe("/joint_states", 1, getJointStates);
 
@@ -221,11 +248,11 @@ void sendGoal(const int &joint_num,
         int steps_num;
         if(direction>0)
         {
-            steps_num=int((MAX_ANGLE-js_current.position[abs(joint_num)-1])/resolution);
+            steps_num=int((angular_limit_upper[abs(joint_num)-1]-js_current.position[abs(joint_num)-1])/resolution);
         }
         else
         {
-            steps_num=int((js_current.position[abs(joint_num)-1]-MIN_ANGLE)/resolution);
+            steps_num=int((js_current.position[abs(joint_num)-1]-angular_limit_lower[abs(joint_num)-1])/resolution);
         }
         if(steps_num<=0)
             steps_num=1;
@@ -445,7 +472,7 @@ void CuteKeyboardTeleopNode::keyboardLoop(actionlib::SimpleActionClient<control_
             case KEYCODE_X:
                 if(flag_joint_space)
                 {
-                    if(js_current.position[0] < MAX_ANGLE && dirty==false)
+                    if(js_current.position[0] < angular_limit_upper[0] && dirty==false)
                     {
                         sendGoal(1, aclient);
                         if(!flag_discontinuous_movement)
@@ -468,7 +495,7 @@ void CuteKeyboardTeleopNode::keyboardLoop(actionlib::SimpleActionClient<control_
             case KEYCODE_C:
                 if(flag_joint_space)
                 {
-                    if(js_current.position[0] > MIN_ANGLE&& dirty==false)
+                    if(js_current.position[0] > angular_limit_lower[0] && dirty==false)
                     {
                         sendGoal(-1, aclient);
                         if(!flag_discontinuous_movement)
@@ -491,7 +518,7 @@ void CuteKeyboardTeleopNode::keyboardLoop(actionlib::SimpleActionClient<control_
             case KEYCODE_S:
                 if(flag_joint_space)
                 {
-                    if (js_current.position[1]<MAX_ANGLE&& dirty==false)
+                    if (js_current.position[1]<angular_limit_upper[1]&& dirty==false)
                     {
                         sendGoal(2, aclient);
                         if(!flag_discontinuous_movement)
@@ -514,7 +541,7 @@ void CuteKeyboardTeleopNode::keyboardLoop(actionlib::SimpleActionClient<control_
             case KEYCODE_D:
                 if(flag_joint_space)
                 {
-                    if (js_current.position[1]>MIN_ANGLE&& dirty==false)
+                    if (js_current.position[1]>angular_limit_lower[1]&& dirty==false)
                     {
                         sendGoal(-2, aclient);
                         if(!flag_discontinuous_movement)
@@ -537,7 +564,7 @@ void CuteKeyboardTeleopNode::keyboardLoop(actionlib::SimpleActionClient<control_
             case KEYCODE_W:
                 if(flag_joint_space)
                 {
-                    if (js_current.position[2]<MAX_ANGLE&& dirty==false)
+                    if (js_current.position[2]<angular_limit_upper[2]&& dirty==false)
                     {
                         sendGoal(3, aclient);
                         if(!flag_discontinuous_movement)
@@ -560,7 +587,7 @@ void CuteKeyboardTeleopNode::keyboardLoop(actionlib::SimpleActionClient<control_
             case KEYCODE_E:
                 if(flag_joint_space)
                 {
-                    if (js_current.position[2]>MIN_ANGLE&& dirty==false)
+                    if (js_current.position[2]>angular_limit_lower[2]&& dirty==false)
                     {
                         sendGoal(-3, aclient);
                         if(!flag_discontinuous_movement)
@@ -583,7 +610,7 @@ void CuteKeyboardTeleopNode::keyboardLoop(actionlib::SimpleActionClient<control_
             case KEYCODE_R:
                 if(flag_joint_space)
                 {
-                    if (js_current.position[3]<MAX_ANGLE&& dirty==false)
+                    if (js_current.position[3]<angular_limit_upper[3]&& dirty==false)
                     {
                         sendGoal(4, aclient);
                         if(!flag_discontinuous_movement)
@@ -606,7 +633,7 @@ void CuteKeyboardTeleopNode::keyboardLoop(actionlib::SimpleActionClient<control_
             case KEYCODE_T:
                 if(flag_joint_space)
                 {
-                    if (js_current.position[3]>MIN_ANGLE&& dirty==false)
+                    if (js_current.position[3]>angular_limit_lower[3]&& dirty==false)
                     {
                         sendGoal(-4, aclient);
                         if(!flag_discontinuous_movement)
@@ -629,7 +656,7 @@ void CuteKeyboardTeleopNode::keyboardLoop(actionlib::SimpleActionClient<control_
             case KEYCODE_F:
                 if(flag_joint_space)
                 {
-                    if (js_current.position[4]<MAX_ANGLE&& dirty==false)
+                    if (js_current.position[4]<angular_limit_upper[4]&& dirty==false)
                     {
                         sendGoal(5, aclient);
                         if(!flag_discontinuous_movement)
@@ -652,7 +679,7 @@ void CuteKeyboardTeleopNode::keyboardLoop(actionlib::SimpleActionClient<control_
             case KEYCODE_G:
                 if(flag_joint_space)
                 {
-                    if (js_current.position[4]>MIN_ANGLE&& dirty==false)
+                    if (js_current.position[4]>angular_limit_lower[4]&& dirty==false)
                     {
                         sendGoal(-5, aclient);
                         if(!flag_discontinuous_movement)
@@ -675,7 +702,7 @@ void CuteKeyboardTeleopNode::keyboardLoop(actionlib::SimpleActionClient<control_
             case KEYCODE_V:
                 if(flag_joint_space)
                 {
-                    if (js_current.position[5]<MAX_ANGLE&& dirty==false)
+                    if (js_current.position[5]<angular_limit_upper[5]&& dirty==false)
                     {
                         sendGoal(6, aclient);
                         if(!flag_discontinuous_movement)
@@ -698,7 +725,7 @@ void CuteKeyboardTeleopNode::keyboardLoop(actionlib::SimpleActionClient<control_
             case KEYCODE_B:
                 if(flag_joint_space)
                 {
-                    if (js_current.position[5]>MIN_ANGLE&& dirty==false)
+                    if (js_current.position[5]>angular_limit_lower[5]&& dirty==false)
                     {
                         sendGoal(-6, aclient);
                         if(!flag_discontinuous_movement)
@@ -721,7 +748,7 @@ void CuteKeyboardTeleopNode::keyboardLoop(actionlib::SimpleActionClient<control_
             case KEYCODE_N:
                 if(flag_joint_space)
                 {
-                    if (js_current.position[6]<MAX_ANGLE&& dirty==false)
+                    if (js_current.position[6]<angular_limit_upper[6]&& dirty==false)
                     {
                         sendGoal(7, aclient);
                         if(!flag_discontinuous_movement)
@@ -734,7 +761,7 @@ void CuteKeyboardTeleopNode::keyboardLoop(actionlib::SimpleActionClient<control_
             case KEYCODE_M:
                 if(flag_joint_space)
                 {
-                    if (js_current.position[6]>MIN_ANGLE&& dirty==false)
+                    if (js_current.position[6]>angular_limit_lower[6]&& dirty==false)
                     {
                         sendGoal(-7, aclient);
                         if(!flag_discontinuous_movement)
