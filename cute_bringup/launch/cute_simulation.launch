@@ -1,0 +1,4 @@
+<launch>
+    <include file="$(find cute_model)/launch/gazebo.launch"/>
+    <include file="$(find cute_moveit_config)/launch/moveit_planning_execution.launch"/>
+</launch>

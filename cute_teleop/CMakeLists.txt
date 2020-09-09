@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(cute_teleop)
 
+## Compile as C++11, supported in ROS Kinetic and newer
+add_compile_options(-std=c++11)
+
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
@@ -11,7 +14,21 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   urdf
+
+  rostime
+  sensor_msgs
+  message_filters 
+  cv_bridge 
+  image_transport 
+  compressed_image_transport 
+  tf 
+  compressed_depth_image_transport  
+  geometry_msgs
+  message_generation
 )
+
+## System dependencies are found with CMake's conventions
+find_package(OpenCV REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -47,11 +64,11 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
+add_message_files(
+  FILES
+  pixel.msg
 #   Message2.msg
-# )
+)
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -68,10 +85,10 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   control_msgs#   std_msgs
-# )
+generate_messages(
+  DEPENDENCIES
+  control_msgs std_msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -105,7 +122,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES cute_teleop
-#  CATKIN_DEPENDS actionlib control_msgs roscpp rospy std_msgs
+ CATKIN_DEPENDS actionlib control_msgs roscpp rospy std_msgs geometry_msgs message_runtime
 #  DEPENDS system_lib
 )
 
@@ -118,6 +135,7 @@ catkin_package(
 # include_directories(include)
 include_directories(
   ${catkin_INCLUDE_DIRS}
+  ${OpenCV_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -193,3 +211,43 @@ include_directories(
 add_executable(cute_teleop_keyboard src/cute_teleop_keyboard.cpp)
 add_dependencies(cute_teleop_keyboard ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(cute_teleop_keyboard ${catkin_LIBRARIES})
+
+add_executable(cute_dance src/cute_dance.cpp)
+add_dependencies(cute_dance ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(cute_dance ${catkin_LIBRARIES})
+
+add_executable(coordinate_map src/coordinate_map.cpp)
+target_link_libraries(coordinate_map
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBRARIES}
+)
+
+add_executable(read_video src/read_video.cpp)
+set( CMAKE_BUILD_TYPE Debug )
+set(DEPENDENCIES realsense2 )
+target_link_libraries(read_video
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBRARIES}
+  ${DEPENDENCIES}
+)
+
+add_executable(picture_align src/picture_align.cpp)
+target_link_libraries(picture_align
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBRARIES}
+  ${DEPENDENCIES}
+)
+
+add_executable(distance_mesure src/distance_mesure.cpp)
+target_link_libraries(distance_mesure
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBRARIES}
+  ${DEPENDENCIES}
+)
+
+add_executable(picture_division src/picture_division.cpp)
+target_link_libraries(picture_division
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBRARIES}
+  ${DEPENDENCIES}
+)

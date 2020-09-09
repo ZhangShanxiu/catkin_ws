@@ -1,0 +1,12 @@
+<launch>
+    <arg name="cute_robot_1" default="true"/>
+    <arg name="cute_robot_2" default="false"/>
+ 
+ 
+   <group if="$(arg cute_robot_1)" ns="cute_robot_1">
+      <node pkg="cute_teleop" type="cute_teleop_keyboard" name="cute_teleop_keyboard" output="screen"/>
+   </group>
+   <group if="$(arg cute_robot_2)" ns="cute_robot_2">
+      <node pkg="cute_teleop" type="cute_teleop_keyboard" name="cute_teleop_keyboard" output="screen"/>
+   </group>
+</launch>

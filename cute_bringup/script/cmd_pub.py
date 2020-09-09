@@ -57,13 +57,13 @@ class CmdPub(object):
         ps=PoseStamped()
         ps.header.stamp=rospy.get_rostime()
         ps.header.frame_id='world'
-        ps.pose.position.x=0.061
-        ps.pose.position.y=-0.072
-        ps.pose.position.z=0.497
-        ps.pose.orientation.x=-0.006
-        ps.pose.orientation.y=0.195
-        ps.pose.orientation.z=0.031
-        ps.pose.orientation.w=0.980
+        ps.pose.position.x=-0.194776
+        ps.pose.position.y=0.0921016
+        ps.pose.position.z=0.171236
+        ps.pose.orientation.x=0.978937
+        ps.pose.orientation.y=-0.176944
+        ps.pose.orientation.z=-0.101733
+        ps.pose.orientation.w=-0.00476077
         self.ps_pub.publish(ps)
 
 if __name__=='__main__':

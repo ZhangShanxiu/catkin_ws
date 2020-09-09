@@ -1,0 +1,47 @@
+<launch>
+    <arg name="cute_robot_1" default="true"/> <!--定义一个开关变量，用于是否启动对应机器人 -->
+    <arg name="cute_robot_2" default="true"/>
+ 
+ 
+    <group if="$(arg cute_robot_1)" ns="cute_robot_1"><!--如果cute_robot_1变量为真，则执行后续，在这里我们建立了一个group组，定义了句柄ns,这样在这个group内启动的所有节点topic都会被加上这个ns的前缀-->
+    <!-- There are 3 options for servo: dynamixel, xqtor_0, xqtor_1 -->
+    <!-- xqtor_0: the early version of the xQtor servo before 2017-->
+    <!-- xqtor_1: the new version of the xQtor servo -->
+    <arg name="servo" default="xqtor_1"/>
+    <param name="cute_servo_version" value="$(arg servo)"/>
+    <node name="dynamixel_manager" pkg="cute_servo_controllers" type="controller_manager.py" required="true" output="screen">
+        <rosparam>
+            namespace: dxl_manager
+            serial_ports:
+                pan_tilt_port:
+                    port_name: "/dev/ttyUSB0"  <!--注意修改接口名-->
+                    baud_rate: 250000
+                    min_motor_id: 0
+                    max_motor_id: 25
+                    update_rate: 50
+        </rosparam>
+    </node>
+    <include file="$(find cute_bringup)/launch/cute_spawner.launch"/>
+   </group>
+ 
+    <group if="$(arg cute_robot_2)" ns="cute_robot_2">
+    <!-- There are 3 options for servo: dynamixel, xqtor_0, xqtor_1 -->
+    <!-- xqtor_0: the early version of the xQtor servo before 2017-->
+    <!-- xqtor_1: the new version of the xQtor servo -->
+    <arg name="servo" default="xqtor_1"/>
+    <param name="cute_servo_version" value="$(arg servo)"/>
+    <node name="dynamixel_manager" pkg="cute_servo_controllers" type="controller_manager.py" required="true" output="screen">
+        <rosparam>
+            namespace: dxl_manager
+            serial_ports:
+                pan_tilt_port:
+                    port_name: "/dev/ttyUSB1"
+                    baud_rate: 250000
+                    min_motor_id: 0
+                    max_motor_id: 25
+                    update_rate: 50
+        </rosparam>
+    </node>
+    <include file="$(find cute_bringup)/launch/cute_spawner.launch"/>
+   </group>
+</launch>

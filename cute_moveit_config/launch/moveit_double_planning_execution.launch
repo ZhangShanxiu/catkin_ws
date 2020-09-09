@@ -1,0 +1,35 @@
+<launch>
+ # The planning and execution components of MoveIt! configured to 
+ # publish the current configuration of the robot (simulated or real)
+ # and the current state of the world as seen by the planner
+
+ <arg name="cute_robot_1" default="true"/> <!--定义一个开关变量，用于是否启动对应机器人 -->
+ <arg name="cute_robot_2" default="true"/>
+    
+ <group if="$(arg cute_robot_1)" ns="cute_robot_1"><!--如果cute_robot_1变量为真，则执行后续，在这里我们建立了一个group组，定义了句柄ns,这样在这个group内启动的所有节点topic都会被加上这个ns的前缀-->
+ <param name="move_group/trajectory_execution/execution_duration_monitoring" value="false" />
+ <include file="$(find cute_moveit_config)/launch/move_group.launch">
+  <arg name="publish_monitored_planning_scene" value="true" />
+ </include>
+ # The visualization component of MoveIt!
+ <arg name="display" default="true"/>
+ <include file="$(find cute_moveit_config)/launch/moveit_rviz.launch" if="$(arg display)">
+   <arg name="config" value="true"/>
+ </include>
+ <node name="cute_basic_api" pkg="cute_bringup" type="cute_basic_api.py" output="screen"/>
+ </group>
+
+ <group if="$(arg cute_robot_2)" ns="cute_robot_2"><!--如果cute_robot_2变量为真，则执行后续，在这里我们建立了一个group组，定义了句柄ns,这样在这个group内启动的所有节点topic都会被加上这个ns的前缀-->
+ <param name="move_group/trajectory_execution/execution_duration_monitoring" value="false" />
+ <include file="$(find cute_moveit_config)/launch/move_group.launch">
+  <arg name="publish_monitored_planning_scene" value="true" />
+ </include>
+ # The visualization component of MoveIt!
+ <arg name="display" default="true"/>
+ <include file="$(find cute_moveit_config)/launch/moveit_rviz.launch" if="$(arg display)">
+   <arg name="config" value="true"/>
+ </include>
+ <node name="cute_basic_api" pkg="cute_bringup" type="cute_basic_api.py" output="screen"/>
+ </group>
+
+</launch>

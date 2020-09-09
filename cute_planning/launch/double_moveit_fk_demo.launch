@@ -1,0 +1,12 @@
+<launch>
+    <arg name="cute_robot_1" default="true"/>
+    <arg name="cute_robot_2" default="true"/>
+ 
+ 
+   <group if="$(arg cute_robot_1)" ns="cute_robot_1">
+      <node pkg="cute_planning" type="moveit_fk_demo.py" name="moveit_fk_demo" output="screen"/>
+   </group>
+   <group if="$(arg cute_robot_2)" ns="cute_robot_2">
+      <node pkg="cute_planning" type="moveit_fk_demo.py" name="moveit_fk_demo" output="screen"/>
+   </group>
+</launch>

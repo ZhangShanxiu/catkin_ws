@@ -569,5 +569,10 @@
     <child
       link="end_link" />
   </joint>
+
+  <!-- realsense D435 -->
+  <xacro:include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro">
+    <sensor_d435 parent="${prefix}part7"></sensor_d435>
+  </xacro:include>
   
 </robot>

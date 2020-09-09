@@ -1,0 +1,5 @@
+<launch>
+    <include file="$(find realsense2_camera)/launch/rs_rgbd.launch"/>
+    <include file="$(find robot_vision)/launch/ar_track_camera.launch"/>
+    <node name="moveit_track_demo" pkg="cute_planning" type="moveit_track_demo.py"></node>
+</launch>
